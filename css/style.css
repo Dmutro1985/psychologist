@@ -787,3 +787,92 @@ body {
     transform: none !important;
   }
 }
+
+/* ========================================
+   Додаткові покращення
+   ======================================== */
+
+/* Sticky navbar */
+#mainNavbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background-color: #fff !important;
+  transition: box-shadow 0.3s ease;
+}
+
+#mainNavbar.scrolled {
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08) !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Кнопка Нагору */
+#scrollTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #445442;
+  color: #fff;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#scrollTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+#scrollTopBtn:hover {
+  background-color: #FFA900;
+  transform: translateY(-3px);
+}
+
+/* Мобільна кнопка «Записатися» */
+.mobile-book-btn {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #445442;
+  color: #fff;
+  text-align: center;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  z-index: 998;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-book-btn:hover {
+  background-color: #FFA900;
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  .mobile-book-btn {
+    display: block;
+  }
+  body {
+    padding-bottom: 70px;
+  }
+  #scrollTopBtn {
+    bottom: 80px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+}
