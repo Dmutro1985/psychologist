@@ -1,137 +1,88 @@
-// Бургер меню
+// ========== Бургер-меню ==========
 const burgerBtn = document.getElementById('burgerBtn');
 const navbarContent = document.getElementById('navbarSupportedContent');
 
-burgerBtn.addEventListener('click', () => {
-  burgerBtn.classList.toggle('active');
-});
-
-// Закриття меню при кліку на пункт
-const navLinks = document.querySelectorAll('#navbarSupportedContent .nav-link');
-navLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    if (navbarContent.classList.contains('show')) {
-      // Використовуємо MDB Collapse для плавного закриття
-      new mdb.Collapse(navbarContent, {toggle: true});
-      burgerBtn.classList.remove('active');
-    }
+if (burgerBtn && navbarContent) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('active');
   });
-});
 
+  document.querySelectorAll('#navbarSupportedContent .nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (navbarContent.classList.contains('show')) {
+        new mdb.Collapse(navbarContent, { toggle: true });
+        burgerBtn.classList.remove('active');
+      }
+    });
+  });
+}
 
-/// Анімація появи фото і тексту
-window.addEventListener('DOMContentLoaded', () => {
-  const wrap2 = document.querySelector('.wrap2');
+// ========== Анімації + Sticky + ScrollTop ==========
+document.addEventListener('DOMContentLoaded', () => {
+
+  // 1. Фото і текст психолога
   const logo3 = document.querySelector('.logo3');
+  const wrap2 = document.querySelector('.wrap2');
+  if (logo3) setTimeout(() => logo3.classList.add('show'), 100);
+  if (wrap2) setTimeout(() => wrap2.classList.add('show'), 500);
 
-  // Спочатку фото
-  setTimeout(() => {
-    logo3.classList.add('show');
-  }, 100); // через 100мс після завантаження
-
-  // Потім текст
-  setTimeout(() => {
-    wrap2.classList.add('show');
-  }, 500); // через 500мс після завантаження
-});
-
-// Анімація появи секції освіти
-window.addEventListener('DOMContentLoaded', () => {
-  const wrap3Blocks = document.querySelectorAll('.wrap3');
-
-  wrap3Blocks.forEach((block, index) => {
-    setTimeout(() => {
-      block.classList.add('show');
-    }, 200 * index); // Затримка між блоками 200мс
+  // 2. Блоки освіти
+  document.querySelectorAll('.wrap3').forEach((block, index) => {
+    setTimeout(() => block.classList.add('show'), 200 * index);
   });
-});
 
-// Анімація появи всіх секцій wrap3
-window.addEventListener('DOMContentLoaded', () => {
-  const wrap3Blocks = document.querySelectorAll('.wrap3');
-
-  wrap3Blocks.forEach((block, index) => {
-    setTimeout(() => {
-      block.classList.add('show');
-    }, 200 * index); // Кожен блок з’являється з інтервалом 200мс
-  });
-});
-
-
-const preItems = document.querySelectorAll('.pre_item');
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('show');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.2 });
-
-preItems.forEach(item => observer.observe(item));
-
-window.addEventListener('DOMContentLoaded', () => {
-  const items = document.querySelectorAll('.pre_item');
-
+  // 3. IntersectionObserver для .pre_item і .slider
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('show');
-        observer.unobserve(entry.target); // один раз показуємо
+        observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.2 });
 
-  items.forEach(item => observer.observe(item));
-});
+  document.querySelectorAll('.pre_item, .slider').forEach(el => {
+    observer.observe(el);
+  });
 
-// Анімація появи блоків при скролі
-window.addEventListener('DOMContentLoaded', () => {
-  const items = document.querySelectorAll('.pre_item');
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('show'); // додаємо клас для анімації
-        observer.unobserve(entry.target);   // показуємо блок один раз
-      }
-    });
-  }, { threshold: 0.2 });
-
-  items.forEach(item => observer.observe(item));
-});
-
-
-// Анімація появи слайдера при скролі
-window.addEventListener('DOMContentLoaded', () => {
-  const slider = document.querySelector('.slider');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting) {
-        slider.classList.add('show');
-        observer.unobserve(slider);
-      }
-    });
-  }, {threshold: 0.2});
-  observer.observe(slider);
-});
-
-
-
-// Поява форми при скролі
-document.addEventListener('DOMContentLoaded', function () {
+  // 4. Форма (Calendly блок)
   const formWrap = document.querySelector('.formz_wrap');
-
-  function checkScroll() {
-    const triggerBottom = window.innerHeight * 0.85;
-    const formTop = formWrap.getBoundingClientRect().top;
-
-    if (formTop < triggerBottom) {
-      formWrap.classList.add('active');
-    }
+  if (formWrap) {
+    const checkScroll = () => {
+      const triggerBottom = window.innerHeight * 0.85;
+      if (formWrap.getBoundingClientRect().top < triggerBottom) {
+        formWrap.classList.add('active');
+      }
+    };
+    window.addEventListener('scroll', checkScroll);
+    checkScroll();
   }
 
-  window.addEventListener('scroll', checkScroll);
-  checkScroll(); // перевірка відразу при завантаженні
+  // 5. Sticky navbar shadow
+  const navbar = document.getElementById('mainNavbar');
+  window.addEventListener('scroll', () => {
+    if (navbar) {
+      if (window.scrollY > 40) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }
+  });
+
+  // 6. Кнопка «Нагору»
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
+  if (scrollTopBtn) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        scrollTopBtn.classList.add('show');
+      } else {
+        scrollTopBtn.classList.remove('show');
+      }
+    });
+
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 });
